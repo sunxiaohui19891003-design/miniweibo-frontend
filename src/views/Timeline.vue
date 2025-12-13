@@ -54,21 +54,21 @@ const userId = ref(null)
 
 /** 全部微博 */
 async function loadAll() {
-  const res = await axios.post('http://localhost:8080/weibo/list')
+  const res = await axios.post('https://miniweibo-backend.onrender.com/weibo/list')
   weiboList.value = res.data
 }
 
 /** 我的微博 */
 async function loadMine() {
   if (!userId.value) return
-  const res = await axios.post(`http://localhost:8080/user/${userId.value}`)
+  const res = await axios.post(`https://miniweibo-backend.onrender.com/user/${userId.value}`)
   weiboList.value = res.data
 }
 
 /** 发微博 */
 async function postWeibo() {
   if (!newContent.value.trim()) return
-  await axios.post('http://localhost:8080/post', {
+  await axios.post('https://miniweibo-backend.onrender.com/post', {
     content: newContent.value
   })
   newContent.value = ''
@@ -77,7 +77,7 @@ async function postWeibo() {
 
 /** 删除 */
 async function deleteWeibo(id) {
-  await axios.delete(`http://localhost:8080/${id}`)
+  await axios.delete(`https://miniweibo-backend.onrender.com/${id}`)
   loadAll()
 }
 
@@ -92,7 +92,7 @@ function cancelEdit() {
 
 /** 更新 */
 async function updateWeibo(id) {
-  await axios.put(`http://localhost:8080/weibo/${id}`, {
+  await axios.put(`https://miniweibo-backend.onrender.com/weibo/${id}`, {
     content: editContent.value
   })
   editId.value = null
@@ -101,7 +101,7 @@ async function updateWeibo(id) {
 
 /** 退出 */
 async function logout() {
-  await axios.post('http://localhost:8080/logout')
+  await axios.post('https://miniweibo-backend.onrender.com/logout')
   router.push('/login')
 }
 
