@@ -19,6 +19,7 @@
 
     <div style="margin-top: 20px">
       <button @click="login">Login</button>
+      <button @click="register">Register</button>
     </div>
   </div>
 </template>
@@ -56,7 +57,31 @@ async function login() {
     router.push('/timeline')
   } catch (e) {
     alert('登录失败')
-    console.error(e)
+  // 登录失败 → 当游客
+  sessionStorage.setItem('username', '游客')
+  sessionStorage.removeItem('userId')
+
+  router.push('/timeline')
   }
 }
+async function register() {
+  try {
+    const res = await axios.post(
+      'https://miniweibo-backend.onrender.com/register',
+      {
+        username: username.value,
+        password: password.value
+      },
+      {
+        withCredentials: true
+      }
+    )
+
+    alert('注册成功，请登录')
+
+  } catch (e) {
+    alert('注册失败（用户名可能已存在）')
+  }
+}
+
 </script>
