@@ -1,6 +1,18 @@
 <template>
   <div style="padding: 40px; max-width: 600px; margin: auto">
-    <h2>微博</h2>
+    <div
+  style="
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  "
+>
+  <div style="font-size: 14px; color: #555">
+    👤 {{ displayName }}
+  </div>
+  <h2 style="margin: 0">微博</h2>
+</div>
 
     <!-- 操作区 -->
     <div style="margin-bottom: 20px">
@@ -45,7 +57,7 @@ import { useRouter } from 'vue-router'
 axios.defaults.withCredentials = true
 
 const router = useRouter()
-
+const displayName = ref('Guest')
 const weiboList = ref([])
 const newContent = ref('')
 const editId = ref(null)
@@ -104,7 +116,12 @@ async function logout() {
   await axios.post('https://miniweibo-backend.onrender.com/logout')
   router.push('/login')
 }
-
+onMounted(() => {
+  const name = sessionStorage.getItem('username')
+  if (name) {
+    displayName.value = name
+  }
+})
 onMounted(() => {
   const saved = sessionStorage.getItem('userId')
   if (!saved) {
