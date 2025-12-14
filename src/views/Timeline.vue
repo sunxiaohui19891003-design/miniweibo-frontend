@@ -37,6 +37,7 @@
           {{ w.content }}
           <button @click="startEdit(w)">编辑</button>
           <button @click="deleteWeibo(w.id)">删除</button>
+          <button @click="likeWeibo(w.id)">👍 {{ w.likeCount }}</button>
         </div>
 
         <div v-else>
@@ -131,4 +132,8 @@ onMounted(() => {
   userId.value = saved
   loadAll()
 })
+async function likeWeibo(id) {
+  await axios.post(`https://miniweibo-backend.onrender.com/weibo/${id}/like`)
+  loadAll()
+}
 </script>
