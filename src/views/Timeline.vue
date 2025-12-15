@@ -29,17 +29,29 @@
     </div>
 
     <hr />
-
-    <!-- 微博列表 -->
     <ul>
-      <li v-for="w in weiboList" :key="w.id" style="margin-bottom: 10px">
+       <li v-for="w in weiboList" :key="w.id" style="margin-bottom: 10px">
+        
+      <!-- 评论区 -->
+  <div style="margin-top: 10px; padding-left: 20px">
+    <div v-for="c in commentMap[w.id]" :key="c.id" style="font-size: 14px">
+      💬 {{ c.content }}
+    </div>
+
+    <input
+      v-model="commentInput[w.id]"
+      placeholder="写评论..."
+      style="width: 80%; margin-top: 5px"
+    />
+    <button @click="addComment(w.id)">评论</button>
+  </div>
+  <!-- 微博本体 -->
         <div v-if="editId !== w.id">
           {{ w.content }}
-          <button @click="startEdit(w)">编辑</button>
+          <button @click="startEdit(w)">编辑</button>  <!-- 微博列表 -->
           <button @click="deleteWeibo(w.id)">删除</button>
           <button @click="likeWeibo(w.id)">👍 {{ w.likeCount }}</button>
         </div>
-
         <div v-else>
           <input v-model="editContent" />
           <button @click="updateWeibo(w.id)">保存</button>
@@ -60,6 +72,8 @@ axios.defaults.withCredentials = true
 const router = useRouter()
 const displayName = ref('Guest')
 const weiboList = ref([])
+const commentMap = ref({})
+const commentInput = ref({})
 const newContent = ref('')
 const editId = ref(null)
 const editContent = ref('')
@@ -136,4 +150,23 @@ async function likeWeibo(id) {
   await axios.post(`https://miniweibo-backend.onrender.com/weibo/${id}/like`)
   loadAll()
 }
+function addComment(weiboId) {
+  // 如果这条微博还没有评论数组，先创建
+  if (!commentMap.value[weiboId]) {
+    commentMap.value[weiboId] = []
+  }
+
+  const content = commentInput.value[weiboId]
+  if (!content || !content.trim()) return
+
+  // 先用前端假数据
+  commentMap.value[weiboId].push({
+    id: Date.now(),
+    content: content
+  })
+
+  // 清空输入框
+  commentInput.value[weiboId] = ''
+}
+
 </script>
