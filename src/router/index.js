@@ -27,7 +27,11 @@ const router = createRouter({
     {
       path: '/messages',
       component: () => import('../views/Messages.vue')
-    }
+    },
+    {
+  path: '/users',
+  component: () => import('../views/Users.vue')
+}
   ],
 })
 
