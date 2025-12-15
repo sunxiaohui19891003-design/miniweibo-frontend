@@ -29,6 +29,14 @@
     <hr />
     <ul>
       <li v-for="w in weiboList" :key="w.id" style="margin-bottom: 10px">
+        <!-- 作者 + 关注按钮 -->
+        <div style="font-size: 13px; color: #666; margin-bottom: 5px">
+          👤 用户ID：{{ w.user.id }}
+
+          <button v-if="w.user.id !== userId" @click="followUser(w.user.id)" style="margin-left: 10px">
+            关注 / 取关
+          </button>
+        </div>
 
         <!-- 评论区 -->
         <div style="margin-top: 10px; padding-left: 20px">
@@ -236,6 +244,21 @@ async function loadComments(weiboId) {
 function goMessages() {
   router.push('/messages')
 }
+async function followUser(targetUserId) {
+  await axios.post(
+    'https://miniweibo-backend.onrender.com/follow',
+    null,
+    {
+      params: {
+        following_id: targetUserId
+      }
+    }
+  )
+
+  // 操作完直接刷新列表
+  loadAll()
+}
+
 
 
 
