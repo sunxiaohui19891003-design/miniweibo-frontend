@@ -39,6 +39,7 @@ async function loadUsers() {
   const res = await axios.get(
     'https://miniweibo-backend.onrender.com/users'
   )
+    console.log('users res.data =', res.data)
   users.value = res.data
 }
 
