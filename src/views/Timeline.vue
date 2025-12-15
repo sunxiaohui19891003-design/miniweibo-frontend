@@ -19,27 +19,17 @@
       <button @click="postWeibo">发布</button>
       <input v-model="searchKeyword" placeholder="搜索微博内容..." style="width: 60%; margin-left: 10px" />
       <button @click="searchWeibo">搜索</button>
-
-      <button @click="loadAll" style="margin-left: 10px">全部微博</button>
-      <button @click="loadMine" style="margin-left: 10px">我的微博</button>
       <button @click="logout" style="margin-left: 10px">退出</button>
       <button @click="goMessages" style="margin-left: 10px">私信</button>
+      <button @click="loadAll" style="margin-left: 10px">全部微博</button>
+      <button @click="loadMine" style="margin-left: 10px">我的微博</button>
+      <button @click="goUsers" style="margin-left: 10px">用户列表</button>
     </div>
 
     <hr />
     <ul>
       <li v-for="w in weiboList" :key="w.id" style="margin-bottom: 10px">
-        <!-- 作者 + 关注按钮 -->
-        <div v-if="w.user" style="font-size: 13px; color: #666; margin-bottom: 5px">
-          👤 用户ID：{{ w.user.id }}
-
-          <button v-if="w.user.id !== userId" @click="followUser(w.user.id)" style="margin-left: 10px">
-            关注 / 取关
-          </button>
-        </div>
-
-
-        <!-- 评论区 -->
+      <!-- 评论区 -->
         <div style="margin-top: 10px; padding-left: 20px">
           <div v-for="c in commentMap[w.id]" :key="c.id" style="font-size: 14px">
             <span v-if="editingCommentId !== c.id">
@@ -244,6 +234,9 @@ async function loadComments(weiboId) {
 }
 function goMessages() {
   router.push('/messages')
+}
+function goUsers() {
+  router.push('/users')
 }
 async function followUser(targetUserId) {
   await axios.post(
