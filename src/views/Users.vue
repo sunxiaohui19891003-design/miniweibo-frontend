@@ -3,11 +3,7 @@
     <h2>用户列表</h2>
 
     <ul>
-      <li
-        v-for="u in users"
-        :key="u.id"
-        style="margin-bottom: 10px; display: flex; justify-content: space-between"
-      >
+      <li v-for="u in users" :key="u.id" style="margin-bottom: 10px; display: flex; justify-content: space-between">
         <span>
           👤 {{ u.username }}（ID: {{ u.id }}）
         </span>
@@ -17,7 +13,29 @@
         </button>
       </li>
     </ul>
+    <h3>我关注的人</h3>
+    <ul>
+      <li v-for="u in followingList" :key="u.id">
+        👤 {{ u.username }}
+        <button @click="followUser(u.id)">取消关注</button>
+      </li>
+    </ul>
 
+    <h3>关注我的人</h3>
+    <ul>
+      <li v-for="u in followerList" :key="u.id">
+        👤 {{ u.username }}
+        <button @click="followUser(u.id)">关注回去</button>
+      </li>
+    </ul>
+
+    <h3>其他用户</h3>
+    <ul>
+      <li v-for="u in otherUsers" :key="u.id">
+        👤 {{ u.username }}
+        <button @click="followUser(u.id)">关注</button>
+      </li>
+    </ul>
     <button style="margin-top: 20px" @click="goBack">
       返回微博
     </button>
@@ -30,7 +48,9 @@ import axios from 'axios'
 import { useRouter } from 'vue-router'
 
 axios.defaults.withCredentials = true
-
+const followingList = ref([])
+const followerList = ref([])
+const otherUsers = ref([])
 const router = useRouter()
 const users = ref([])
 
@@ -40,7 +60,7 @@ async function loadUsers() {
     'https://miniweibo-backend.onrender.com/users',
     { withCredentials: true }
   )
-    console.log('users res.data =', res.data)
+  console.log('users res.data =', res.data)
   users.value = res.data
 }
 
@@ -53,7 +73,7 @@ async function followUser(targetUserId) {
       params: {
         following_id: targetUserId
       },
-        withCredentials: true
+      withCredentials: true
     }
   )
 
