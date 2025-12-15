@@ -1,70 +1,57 @@
 <template>
   <div style="padding: 40px; max-width: 600px; margin: auto">
-    <div
-  style="
+    <div style="
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-  "
->
-  <div style="font-size: 14px; color: #555">
-    👤 {{ displayName }}
-  </div>
-  <h2 style="margin: 0">微博</h2>
-</div>
+  ">
+      <div style="font-size: 14px; color: #555">
+        👤 {{ displayName }}
+      </div>
+      <h2 style="margin: 0">微博</h2>
+    </div>
 
     <!-- 操作区 -->
     <div style="margin-bottom: 20px">
-      <textarea
-        v-model="newContent"
-        placeholder="写点什么吧..."
-        style="width: 100%; height: 80px"
-      />
+      <textarea v-model="newContent" placeholder="写点什么吧..." style="width: 100%; height: 80px" />
       <br />
       <button @click="postWeibo">发布</button>
-      <input
-  v-model="searchKeyword"
-  placeholder="搜索微博内容..."
-  style="width: 60%; margin-left: 10px"
-/>
-<button @click="searchWeibo">搜索</button>
+      <input v-model="searchKeyword" placeholder="搜索微博内容..." style="width: 60%; margin-left: 10px" />
+      <button @click="searchWeibo">搜索</button>
 
       <button @click="loadAll" style="margin-left: 10px">全部微博</button>
       <button @click="loadMine" style="margin-left: 10px">我的微博</button>
       <button @click="logout" style="margin-left: 10px">退出</button>
+      <button @click="goMessages" style="margin-left: 10px">私信</button>
     </div>
 
     <hr />
     <ul>
-       <li v-for="w in weiboList" :key="w.id" style="margin-bottom: 10px">
-        
-      <!-- 评论区 -->
-  <div style="margin-top: 10px; padding-left: 20px">
-<div v-for="c in commentMap[w.id]" :key="c.id" style="font-size: 14px">
-  <span v-if="editingCommentId !== c.id">
-    💬 {{ c.content }}
-    <button @click="startEditComment(c)">编辑</button>
-    <button @click="deleteComment(w.id, c.id)">删除</button>
-  </span>
+      <li v-for="w in weiboList" :key="w.id" style="margin-bottom: 10px">
 
-  <span v-else>
-    <input v-model="editingCommentContent" style="width: 60%" />
-    <button @click="saveEditComment(w.id, c.id)">保存</button>
-    <button @click="cancelEditComment">取消</button>
-  </span>
-</div>
-    <input
-      v-model="commentInput[w.id]"
-      placeholder="写评论..."
-      style="width: 80%; margin-top: 5px"
-    />
-    <button @click="addComment(w.id)">评论</button>
-  </div>
-  <!-- 微博本体 -->
+        <!-- 评论区 -->
+        <div style="margin-top: 10px; padding-left: 20px">
+          <div v-for="c in commentMap[w.id]" :key="c.id" style="font-size: 14px">
+            <span v-if="editingCommentId !== c.id">
+              💬 {{ c.content }}
+              <button @click="startEditComment(c)">编辑</button>
+              <button @click="deleteComment(w.id, c.id)">删除</button>
+            </span>
+
+            <span v-else>
+              <input v-model="editingCommentContent" style="width: 60%" />
+              <button @click="saveEditComment(w.id, c.id)">保存</button>
+              <button @click="cancelEditComment">取消</button>
+            </span>
+          </div>
+          <input v-model="commentInput[w.id]" placeholder="写评论..." style="width: 80%; margin-top: 5px" />
+          <button @click="addComment(w.id)">评论</button>
+        </div>
+        <!-- 微博本体 -->
         <div v-if="editId !== w.id">
           {{ w.content }}
-          <button @click="startEdit(w)">编辑</button>  <!-- 微博列表 -->
+          <button @click="startEdit(w)">编辑</button> <!-- 微博列表 -->
           <button @click="deleteWeibo(w.id)">删除</button>
           <button @click="likeWeibo(w.id)">👍 {{ w.likeCount }}</button>
         </div>
@@ -131,9 +118,9 @@ async function searchWeibo() {
     return
   }
   const res = await axios.get(
-  `https://miniweibo-backend.onrender.com/weibo/search?keyword=${searchKeyword.value}`
-)
-weiboList.value = res.data
+    `https://miniweibo-backend.onrender.com/weibo/search?keyword=${searchKeyword.value}`
+  )
+  weiboList.value = res.data
 }
 /** 编辑 */
 function startEdit(w) {
@@ -245,6 +232,9 @@ async function loadComments(weiboId) {
     }
   )
   commentMap.value[weiboId] = res.data
+}
+function goMessages() {
+  router.push('/messages')
 }
 
 
