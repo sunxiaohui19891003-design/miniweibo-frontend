@@ -2,40 +2,24 @@
   <div style="padding: 40px; max-width: 600px; margin: auto">
     <h2>用户列表</h2>
 
-    <ul>
-      <li v-for="u in users" :key="u.id" style="margin-bottom: 10px; display: flex; justify-content: space-between">
-        <span>
-          👤 {{ u.username }}（ID: {{ u.id }}）
-        </span>
-
-        <button @click="followUser(u.id)">
-          关注 / 取关
-        </button>
-      </li>
-    </ul>
+    <!-- 我关注的人 -->
     <h3>我关注的人</h3>
     <ul>
       <li v-for="u in followingList" :key="u.id">
-        👤 {{ u.username }}
+        👤 {{ u.username }}（ID: {{ u.id }}）
         <button @click="followUser(u.id)">取消关注</button>
       </li>
     </ul>
 
-    <h3>关注我的人</h3>
-    <ul>
-      <li v-for="u in followerList" :key="u.id">
-        👤 {{ u.username }}
-        <button @click="followUser(u.id)">关注回去</button>
-      </li>
-    </ul>
-
+    <!-- 其他用户 -->
     <h3>其他用户</h3>
     <ul>
       <li v-for="u in otherUsers" :key="u.id">
-        👤 {{ u.username }}
+        👤 {{ u.username }}（ID: {{ u.id }}）
         <button @click="followUser(u.id)">关注</button>
       </li>
     </ul>
+
     <button style="margin-top: 20px" @click="goBack">
       返回微博
     </button>
@@ -48,20 +32,50 @@ import axios from 'axios'
 import { useRouter } from 'vue-router'
 
 axios.defaults.withCredentials = true
-const followingList = ref([])
-const followerList = ref([])
-const otherUsers = ref([])
-const router = useRouter()
-const users = ref([])
 
-/** 加载所有用户（除了自己） */
-async function loadUsers() {
-  const res = await axios.get(
+const router = useRouter()
+
+const followingList = ref([])
+async function refreshAll() {
+  // ① 我关注的人
+  const followingRes = await axios.get(
+    'https://miniweibo-backend.onrender.com/followings',
+    { withCredentials: true }
+  )
+
+  // ② 所有用户
+  const usersRes = await axios.get(
     'https://miniweibo-backend.onrender.com/users',
     { withCredentials: true }
   )
-  console.log('users res.data =', res.data)
-  users.value = res.data
+
+  followingList.value = followingRes.data
+
+  const followingIds = new Set(followingRes.data.map(u => u.id))
+  otherUsers.value = usersRes.data.filter(u => !followingIds.has(u.id))
+}
+
+const otherUsers = ref([])
+
+/** 加载数据 */
+async function loadData() {
+  // 1️⃣ 我关注的人
+  const followingRes = await axios.get(
+    'https://miniweibo-backend.onrender.com/followings',
+    { withCredentials: true }
+  )
+
+  // 2️⃣ 所有用户
+  const usersRes = await axios.get(
+    'https://miniweibo-backend.onrender.com/users',
+    { withCredentials: true }
+  )
+
+  followingList.value = followingRes.data
+
+  // 3️⃣ 其他用户 = 所有人 - 我关注的人
+  const followingIds = new Set(followingRes.data.map(u => u.id))
+  otherUsers.value = usersRes.data.filter(u => !followingIds.has(u.id))
 }
 
 /** 关注 / 取关 */
@@ -70,23 +84,21 @@ async function followUser(targetUserId) {
     'https://miniweibo-backend.onrender.com/follow',
     null,
     {
-      params: {
-        following_id: targetUserId
-      },
+      params: { following_id: targetUserId },
       withCredentials: true
     }
   )
 
-  // 可选：点完刷新一次列表
-  loadUsers()
+  // 重新加载
+  loadData()
 }
 
-/** 返回微博页 */
+/** 返回微博（⚠️ 关键修正） */
 function goBack() {
-  router.push('/')
+  router.push('/timeline')
 }
 
 onMounted(() => {
-  loadUsers()
+  loadData()
 })
 </script>

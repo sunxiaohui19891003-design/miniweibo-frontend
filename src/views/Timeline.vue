@@ -24,6 +24,7 @@
       <button @click="loadAll" style="margin-left: 10px">全部微博</button>
       <button @click="loadMine" style="margin-left: 10px">我的微博</button>
       <button @click="goUsers" style="margin-left: 10px">用户列表</button>
+      <button @click="goNotifications" style="margin-left: 10px">通知</button>
     </div>
 
     <hr />
@@ -144,21 +145,17 @@ async function logout() {
   await axios.post('https://miniweibo-backend.onrender.com/logout')
   router.push('/login')
 }
+
+/** 页面加载时 */
 onMounted(() => {
+  // 显示用户名（有就显示，没有就算了）
   const name = sessionStorage.getItem('username')
   if (name) {
     displayName.value = name
   }
-})
-onMounted(() => {
-  const saved = sessionStorage.getItem('userId')
-  if (!saved) {
-    router.push('/login')
-    return
-  }
-  userId.value = saved
   loadAll()
 })
+
 async function likeWeibo(id) {
   await axios.post(`https://miniweibo-backend.onrender.com/weibo/${id}/like`)
   loadAll()
@@ -231,6 +228,9 @@ async function loadComments(weiboId) {
     }
   )
   commentMap.value[weiboId] = res.data
+}
+function goNotifications() {
+  router.push('/notifications')
 }
 function goMessages() {
   router.push('/messages')

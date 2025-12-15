@@ -29,9 +29,13 @@ const router = createRouter({
       component: () => import('../views/Messages.vue')
     },
     {
-  path: '/users',
-  component: () => import('../views/Users.vue')
-}
+      path: '/users',
+      component: () => import('../views/Users.vue')
+    },
+    {
+      path: '/notifications',
+      component: () => import('../views/Notifications.vue')
+    }
   ],
 })
 
