@@ -37,7 +37,8 @@ const users = ref([])
 /** 加载所有用户（除了自己） */
 async function loadUsers() {
   const res = await axios.get(
-    'https://miniweibo-backend.onrender.com/users'
+    'https://miniweibo-backend.onrender.com/users',
+    { withCredentials: true }
   )
     console.log('users res.data =', res.data)
   users.value = res.data
@@ -51,7 +52,8 @@ async function followUser(targetUserId) {
     {
       params: {
         following_id: targetUserId
-      }
+      },
+        withCredentials: true
     }
   )
 
