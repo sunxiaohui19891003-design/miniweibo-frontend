@@ -1,7 +1,9 @@
 <template>
   <div style="padding: 40px; max-width: 600px; margin: auto">
     <h2>我的收藏</h2>
-
+    <button @click="goBack" style="margin-bottom: 20px">
+  返回微博
+</button>
     <div v-if="weiboList.length === 0" style="color: #888">
       暂无收藏
     </div>
@@ -30,7 +32,9 @@ axios.defaults.withCredentials = true
 
 const router = useRouter()
 const weiboList = ref([])
-
+function goBack() {
+  router.push('/')
+}
 async function loadFavorites() {
   const res = await axios.get(
     'https://miniweibo-backend.onrender.com/favorites'
