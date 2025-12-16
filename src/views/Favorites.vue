@@ -51,6 +51,7 @@ function goBack() {
     router.push('/')
 }
 
+
 onMounted(() => {
     loadFavorites()
 })

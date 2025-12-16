@@ -56,6 +56,7 @@
           <button @click="deleteWeibo(w.id)">删除</button>
           <button @click="likeWeibo(w.id)">👍 {{ w.likeCount }}</button>
           <button @click="toggleFavorite(w.id)">⭐ 收藏</button>
+          <button @click="goReport(w.id)">🚨 举报</button>
 
         </div>
         <div v-else>
@@ -117,7 +118,7 @@ async function toggleFavorite(weiboId) {
       params: { weiboId }
     }
   )
-   loadAll()
+  loadAll()
 }
 
 
@@ -252,6 +253,15 @@ function goFavorites() {
 
 function goMessages() {
   router.push('/messages')
+}
+function goReport(weiboId) {
+  router.push({
+    path: '/report',
+    query: {
+      targetType: 'WEIBO',
+      targetId: weiboId
+    }
+  })
 }
 function goUsers() {
   router.push('/users')
