@@ -15,7 +15,6 @@
         <div>
           <b>{{ n.type }}</b>
           ｜来自用户 {{ n.fromUserId }}
-          <span v-if="!n.read" style="color: red">（未读）</span>
         </div>
 
         <div style="font-size: 12px; color: #666">
