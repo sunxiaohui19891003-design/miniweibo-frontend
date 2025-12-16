@@ -4,11 +4,11 @@
 
     <!-- 返回按钮（不是退出） -->
     <button @click="goBack" style="margin-bottom: 20px">
-      返回微博
+      返回ブログ
     </button>
 
     <div v-if="weiboList.length === 0" style="color: #888">
-      暂无浏览记录
+      まだ閲覧履歴はありません
     </div>
 
     <ul>

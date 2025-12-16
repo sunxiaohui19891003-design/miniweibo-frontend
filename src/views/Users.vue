@@ -21,7 +21,7 @@
     </ul>
 
     <button style="margin-top: 20px" @click="goBack">
-      返回微博
+      返回ブログ
     </button>
   </div>
 </template>

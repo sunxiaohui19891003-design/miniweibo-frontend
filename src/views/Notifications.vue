@@ -1,9 +1,9 @@
 <template>
   <div style="padding: 40px; max-width: 600px; margin: auto">
-    <h2>通知页面</h2>
+    <h2>通知</h2>
 
     <div v-if="notifications.length === 0" style="color: #888">
-      暂无通知
+      まだ通知はありません
     </div>
 
     <ul>
@@ -14,7 +14,7 @@
       >
         <div>
           <b>{{ n.type }}</b>
-          ｜来自用户 {{ n.fromUserId }}
+          ｜ユーザーから {{ n.fromUserId }}
         </div>
 
         <div style="font-size: 12px; color: #666">
@@ -40,7 +40,7 @@ onMounted(async () => {
     )
     notifications.value = res.data
   } catch (e) {
-    console.error('加载通知失败', e)
+    console.error('通知の読み込みに失敗しました', e)
   }
 })
 </script>

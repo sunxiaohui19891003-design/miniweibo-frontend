@@ -1,17 +1,17 @@
 <template>
   <div style="padding: 40px; max-width: 600px; margin: auto">
-    <h2>私信</h2>
+    <h2>ダイレクトメッセージ</h2>
 
     <!-- 发送私信 -->
     <div style="margin-bottom: 20px">
       <input
         v-model="newReceiverId"
-        placeholder="接收者用户ID"
+        placeholder="受信者ユーザーID"
         style="width: 30%; margin-right: 5px"
       />
       <input
         v-model="newContent"
-        placeholder="私信内容"
+        placeholder="メッセージ内容"
         style="width: 50%; margin-right: 5px"
       />
       <button @click="sendMessage">发送</button>
@@ -29,19 +29,19 @@
         <!-- 查看 / 编辑 -->
         <div v-if="editId !== m.id">
           {{ m.content }}
-          <button @click="startEdit(m)">编辑</button>
-          <button @click="deleteMessage(m.id)">删除</button>
+          <button @click="startEdit(m)">編集</button>
+          <button @click="deleteMessage(m.id)">削除</button>
         </div>
 
         <div v-else>
           <input v-model="editContent" style="width: 70%" />
           <button @click="updateMessage(m.id)">保存</button>
-          <button @click="cancelEdit">取消</button>
+          <button @click="cancelEdit">キャンセル</button>
         </div>
       </li>
     </ul>
 
-    <p v-if="messages.length === 0">暂无私信</p>
+    <p v-if="messages.length === 0">まだメッセージはありません</p>
   </div>
 </template>
 

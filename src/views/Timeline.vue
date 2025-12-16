@@ -9,24 +9,24 @@
       <div style="font-size: 14px; color: #555">
         👤 {{ displayName }}
       </div>
-      <h2 style="margin: 0">微博</h2>
+      <h2 style="margin: 0">ブログ</h2>
     </div>
 
     <!-- 操作区 -->
     <div style="margin-bottom: 20px">
-      <textarea v-model="newContent" placeholder="写点什么吧..." style="width: 100%; height: 80px" />
+      <textarea v-model="newContent" placeholder="何か書いてみよう…" style="width: 100%; height: 80px" />
       <br />
-      <button @click="postWeibo">发布</button>
-      <input v-model="searchKeyword" placeholder="搜索微博内容..." style="width: 60%; margin-left: 10px" />
-      <button @click="searchWeibo">搜索</button>
-      <button @click="logout" style="margin-left: 10px">退出</button>
-      <button @click="goMessages" style="margin-left: 10px">私信</button>
-      <button @click="loadAll" style="margin-left: 10px">全部微博</button>
-      <button @click="loadMine" style="margin-left: 10px">我的微博</button>
-      <button @click="goUsers" style="margin-left: 10px">用户列表</button>
+      <button @click="postWeibo">投稿する</button>
+      <input v-model="searchKeyword" placeholder="検索ブログ内容..." style="width: 60%; margin-left: 10px" />
+      <button @click="searchWeibo">検索</button>
+      <button @click="logout" style="margin-left: 10px">ログアウト</button>
+      <button @click="goMessages" style="margin-left: 10px">ダイレクトメッセージ</button>
+      <button @click="loadAll" style="margin-left: 10px">全てのブログ</button>
+      <button @click="loadMine" style="margin-left: 10px">全てのブログ</button>
+      <button @click="goUsers" style="margin-left: 10px">ユーザー一覧</button>
       <button @click="goNotifications" style="margin-left: 10px">通知</button>
-      <button @click="goFavorites" style="margin-left: 10px">收藏</button>
-      <button @click="goViewHistory" style="margin-left: 10px">浏览记录</button>
+      <button @click="goFavorites" style="margin-left: 10px">お気に入り</button>
+      <button @click="goViewHistory" style="margin-left: 10px">閲覧履歴</button>
 
     </div>
 
@@ -37,35 +37,35 @@
         <!-- 评论区 -->
         <div style="margin-top: 10px; padding-left: 20px">
           <button @click="toggleComments(w.id)">
-            {{ openedWeiboId === w.id ? '收起评论' : '查看评论' }}
+            {{ openedWeiboId === w.id ? 'コメントを閉じる' : 'コメントを見る' }}
           </button>
 
           <div v-if="openedWeiboId === w.id">
             <div v-for="c in commentMap[w.id]" :key="c.id" style="font-size: 14px">
               💬 {{ c.content }}
-              <button @click="startEditComment(c)">编辑</button>
-              <button @click="deleteComment(w.id, c.id)">删除</button>
+              <button @click="startEditComment(c)">編集</button>
+              <button @click="deleteComment(w.id, c.id)">削除</button>
             </div>
 
-            <input v-model="commentInput[w.id]" placeholder="写评论..." style="width: 80%; margin-top: 5px" />
-            <button @click="addComment(w.id)">评论</button>
+            <input v-model="commentInput[w.id]" placeholder="コメントを書く…" style="width: 80%; margin-top: 5px" />
+            <button @click="addComment(w.id)">コメント</button>
           </div>
         </div>
 
         <!-- 微博本体 -->
         <div v-if="editId !== w.id">
           {{ w.content }}
-          <button @click="startEdit(w)">编辑</button> <!-- 微博列表 -->
-          <button @click="deleteWeibo(w.id)">删除</button>
+          <button @click="startEdit(w)">編集</button> <!-- 微博列表 -->
+          <button @click="deleteWeibo(w.id)">削除</button>
           <button @click="likeWeibo(w.id)">👍 {{ w.likeCount }}</button>
-          <button @click="toggleFavorite(w.id)">⭐ 收藏</button>
-          <button @click="goReport(w.id)">🚨 举报</button>
+          <button @click="toggleFavorite(w.id)">⭐ お気に入り</button>
+          <button @click="goReport(w.id)">🚨 通報</button>
 
         </div>
         <div v-else>
           <input v-model="editContent" />
           <button @click="updateWeibo(w.id)">保存</button>
-          <button @click="cancelEdit">取消</button>
+          <button @click="cancelEdit">キャンセル</button>
         </div>
       </li>
     </ul>

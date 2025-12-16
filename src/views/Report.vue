@@ -1,22 +1,22 @@
 <template>
   <div style="padding: 40px; max-width: 500px; margin: auto">
-    <h2>🚨 举报</h2>
+    <h2>🚨 通報</h2>
 
     <div style="margin-bottom: 15px">
-      <label>举报对象类型</label><br />
+      <label>通報对象类型</label><br />
       <select v-model="targetType">
-        <option value="WEIBO">微博</option>
-        <option value="COMMENT">评论</option>
+        <option value="WEIBO">ブログ</option>
+        <option value="COMMENT">コメント</option>
       </select>
     </div>
 
     <div style="margin-bottom: 15px">
-      <label>举报对象 ID</label><br />
+      <label>通報对象 ID</label><br />
       <input v-model="targetId" placeholder="请输入ID" />
     </div>
 
     <div style="margin-bottom: 15px">
-      <label>举报原因</label><br />
+      <label>通報原因</label><br />
       <select v-model="reasonType">
         <option value="SPAM">垃圾信息</option>
         <option value="ABUSE">辱骂攻击</option>
@@ -26,15 +26,15 @@
     </div>
 
     <div style="margin-bottom: 20px">
-      <label>补充说明（可选）</label><br />
+      <label>補足説明（任意）</label><br />
       <textarea
         v-model="description"
         style="width: 100%; height: 80px"
-        placeholder="可以不填"
+        placeholder="入力しなくても構いません"
       />
     </div>
 
-    <button @click="submitReport">提交举报</button>
+    <button @click="submitReport">通報を送信</button>
   </div>
 </template>
 
@@ -51,7 +51,7 @@ const description = ref('')
 
 async function submitReport() {
   if (!targetId.value) {
-    alert('请输入 targetId')
+    alert('入力してください targetId')
     return
   }
 
@@ -70,7 +70,7 @@ async function submitReport() {
     )
     alert('举报成功')
   } catch (e) {
-    alert('举报失败，请确认已登录')
+    alert('通報に失敗しました。ログインしていることを確認してください。')
   }
 }
 </script>
