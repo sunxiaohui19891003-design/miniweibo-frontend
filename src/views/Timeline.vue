@@ -139,11 +139,20 @@ async function searchWeibo() {
     loadAll()
     return
   }
-  const res = await axios.get(
-    `https://miniweibo-backend.onrender.com/weibo/search?keyword=${searchKeyword.value}`
+
+  const res = await axios.post(
+    'https://miniweibo-backend.onrender.com/weibo/search',
+    null,
+    {
+      params: {
+        keyword: searchKeyword.value
+      }
+    }
   )
+
   weiboList.value = res.data
 }
+
 /** 编辑 */
 function startEdit(w) {
   editId.value = w.id
