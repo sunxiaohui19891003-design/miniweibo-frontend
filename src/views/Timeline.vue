@@ -34,31 +34,23 @@
     <ul>
       <li v-for="w in weiboList" :key="w.id" style="margin-bottom: 10px">
         <!-- 评论区 -->
-<!-- 评论区 -->
-<div style="margin-top: 10px; padding-left: 20px">
-  <button @click="toggleComments(w.id)">
-    {{ openedWeiboId === w.id ? '收起评论' : '查看评论' }}
-  </button>
+        <!-- 评论区 -->
+        <div style="margin-top: 10px; padding-left: 20px">
+          <button @click="toggleComments(w.id)">
+            {{ openedWeiboId === w.id ? '收起评论' : '查看评论' }}
+          </button>
 
-  <div v-if="openedWeiboId === w.id">
-    <div
-      v-for="c in commentMap[w.id]"
-      :key="c.id"
-      style="font-size: 14px"
-    >
-      💬 {{ c.content }}
-      <button @click="startEditComment(c)">编辑</button>
-      <button @click="deleteComment(w.id, c.id)">删除</button>
-    </div>
+          <div v-if="openedWeiboId === w.id">
+            <div v-for="c in commentMap[w.id]" :key="c.id" style="font-size: 14px">
+              💬 {{ c.content }}
+              <button @click="startEditComment(c)">编辑</button>
+              <button @click="deleteComment(w.id, c.id)">删除</button>
+            </div>
 
-    <input
-      v-model="commentInput[w.id]"
-      placeholder="写评论..."
-      style="width: 80%; margin-top: 5px"
-    />
-    <button @click="addComment(w.id)">评论</button>
-  </div>
-</div>
+            <input v-model="commentInput[w.id]" placeholder="写评论..." style="width: 80%; margin-top: 5px" />
+            <button @click="addComment(w.id)">评论</button>
+          </div>
+        </div>
 
         <!-- 微博本体 -->
         <div v-if="editId !== w.id">
@@ -183,6 +175,7 @@ onMounted(() => {
   if (name) {
     displayName.value = name
   }
+  userId.value = sessionStorage.getItem('userId')
   loadAll()
 })
 
