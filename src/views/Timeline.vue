@@ -26,6 +26,8 @@
       <button @click="goUsers" style="margin-left: 10px">用户列表</button>
       <button @click="goNotifications" style="margin-left: 10px">通知</button>
       <button @click="goFavorites" style="margin-left: 10px">收藏</button>
+      <button @click="goViewHistory" style="margin-left: 10px">浏览记录</button>
+
     </div>
 
     <hr />
@@ -99,6 +101,9 @@ async function loadMine() {
   if (!userId.value) return
   const res = await axios.post(`https://miniweibo-backend.onrender.com/user/${userId.value}`)
   weiboList.value = res.data
+}
+function goViewHistory() {
+  router.push('/view-history')
 }
 
 /** 发微博 */

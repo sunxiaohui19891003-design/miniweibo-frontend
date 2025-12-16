@@ -48,7 +48,7 @@ async function toggleFavorite(weiboId) {
 }
 
 function goBack() {
-    router.push('/')
+   router.push('/timeline')
 }
 
 
