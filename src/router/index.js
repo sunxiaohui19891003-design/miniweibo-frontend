@@ -15,6 +15,10 @@ const router = createRouter({
       component: Timeline
     },
     {
+      path: '/favorites',
+      component: () => import('../views/Favorites.vue')
+    },
+    {
       path: '/login',
       name: 'login',
       component: Login

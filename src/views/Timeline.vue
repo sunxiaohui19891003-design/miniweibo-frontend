@@ -25,12 +25,13 @@
       <button @click="loadMine" style="margin-left: 10px">我的微博</button>
       <button @click="goUsers" style="margin-left: 10px">用户列表</button>
       <button @click="goNotifications" style="margin-left: 10px">通知</button>
+      <button @click="goFavorites" style="margin-left: 10px">收藏</button>
     </div>
 
     <hr />
     <ul>
       <li v-for="w in weiboList" :key="w.id" style="margin-bottom: 10px">
-      <!-- 评论区 -->
+        <!-- 评论区 -->
         <div style="margin-top: 10px; padding-left: 20px">
           <div v-for="c in commentMap[w.id]" :key="c.id" style="font-size: 14px">
             <span v-if="editingCommentId !== c.id">
@@ -54,6 +55,8 @@
           <button @click="startEdit(w)">编辑</button> <!-- 微博列表 -->
           <button @click="deleteWeibo(w.id)">删除</button>
           <button @click="likeWeibo(w.id)">👍 {{ w.likeCount }}</button>
+          <button @click="toggleFavorite(w.id)">⭐ 收藏</button>
+
         </div>
         <div v-else>
           <input v-model="editContent" />
@@ -106,6 +109,17 @@ async function postWeibo() {
   newContent.value = ''
   loadAll()
 }
+async function toggleFavorite(weiboId) {
+  await axios.post(
+    'https://miniweibo-backend.onrender.com/favorites',
+    null,
+    {
+      params: { weiboId }
+    }
+  )
+   loadAll()
+}
+
 
 /** 删除 */
 async function deleteWeibo(id) {
@@ -232,6 +246,10 @@ async function loadComments(weiboId) {
 function goNotifications() {
   router.push('/notifications')
 }
+function goFavorites() {
+  router.push('/favorites')
+}
+
 function goMessages() {
   router.push('/messages')
 }
