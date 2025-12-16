@@ -35,11 +35,17 @@ const weiboList = ref([])
 
 /** 加载浏览记录 */
 async function loadViewHistory() {
-  const res = await axios.get(
-    'https://miniweibo-backend.onrender.com/view-history'
-  )
-  weiboList.value = res.data
+  try {
+    const res = await axios.get(
+      'https://miniweibo-backend.onrender.com/view-history'
+    )
+    weiboList.value = res.data
+  } catch (e) {
+    // 登录失效，回登录页
+    router.push('/login')
+  }
 }
+
 
 /** 返回微博首页（不是 logout） */
 function goBack() {

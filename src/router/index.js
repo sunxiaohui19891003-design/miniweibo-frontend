@@ -25,6 +25,10 @@ const router = createRouter({
       component: Login
     },
     {
+      path: '/view-history',
+      component: ViewHistory
+    },
+    {
       path: '/about',
       name: 'about',
       component: () => import('../views/AboutView.vue')

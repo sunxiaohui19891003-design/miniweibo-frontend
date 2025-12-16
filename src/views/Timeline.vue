@@ -34,23 +34,32 @@
     <ul>
       <li v-for="w in weiboList" :key="w.id" style="margin-bottom: 10px">
         <!-- 评论区 -->
-        <div style="margin-top: 10px; padding-left: 20px">
-          <div v-for="c in commentMap[w.id]" :key="c.id" style="font-size: 14px">
-            <span v-if="editingCommentId !== c.id">
-              💬 {{ c.content }}
-              <button @click="startEditComment(c)">编辑</button>
-              <button @click="deleteComment(w.id, c.id)">删除</button>
-            </span>
+<!-- 评论区 -->
+<div style="margin-top: 10px; padding-left: 20px">
+  <button @click="toggleComments(w.id)">
+    {{ openedWeiboId === w.id ? '收起评论' : '查看评论' }}
+  </button>
 
-            <span v-else>
-              <input v-model="editingCommentContent" style="width: 60%" />
-              <button @click="saveEditComment(w.id, c.id)">保存</button>
-              <button @click="cancelEditComment">取消</button>
-            </span>
-          </div>
-          <input v-model="commentInput[w.id]" placeholder="写评论..." style="width: 80%; margin-top: 5px" />
-          <button @click="addComment(w.id)">评论</button>
-        </div>
+  <div v-if="openedWeiboId === w.id">
+    <div
+      v-for="c in commentMap[w.id]"
+      :key="c.id"
+      style="font-size: 14px"
+    >
+      💬 {{ c.content }}
+      <button @click="startEditComment(c)">编辑</button>
+      <button @click="deleteComment(w.id, c.id)">删除</button>
+    </div>
+
+    <input
+      v-model="commentInput[w.id]"
+      placeholder="写评论..."
+      style="width: 80%; margin-top: 5px"
+    />
+    <button @click="addComment(w.id)">评论</button>
+  </div>
+</div>
+
         <!-- 微博本体 -->
         <div v-if="editId !== w.id">
           {{ w.content }}
@@ -82,6 +91,7 @@ const router = useRouter()
 const displayName = ref('Guest')
 const weiboList = ref([])
 const commentMap = ref({})
+const openedWeiboId = ref(null)
 const commentInput = ref({})
 const newContent = ref('')
 const searchKeyword = ref('')
@@ -93,7 +103,7 @@ const userId = ref(null)
 async function loadAll() {
   const res = await axios.post('https://miniweibo-backend.onrender.com/weibo/list')
   weiboList.value = res.data
-  res.data.forEach(w => loadComments(w.id))
+  //res.data.forEach(w => loadComments(w.id))
 }
 
 /** 我的微博 */
@@ -237,6 +247,19 @@ async function saveEditComment(weiboId, commentId) {
   cancelEditComment()
   loadComments(weiboId)
 }
+function toggleComments(weiboId) {
+  if (openedWeiboId.value === weiboId) {
+    openedWeiboId.value = null
+    return
+  }
+
+  openedWeiboId.value = weiboId
+
+  if (!commentMap.value[weiboId]) {
+    loadComments(weiboId)
+  }
+}
+
 
 async function loadComments(weiboId) {
   const res = await axios.get(
