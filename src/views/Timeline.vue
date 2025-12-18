@@ -100,8 +100,9 @@ async function loadAll() {
 
 /** 我的微博 */
 async function loadMine() {
-  if (!userId.value) return
-  const res = await axios.post(`https://miniweibo-backend.onrender.com/user/${userId.value}`)
+  const res = await axios.get(
+    'https://miniweibo-backend.onrender.com/weibo/my'
+  )
   weiboList.value = res.data
 }
 function goViewHistory() {
