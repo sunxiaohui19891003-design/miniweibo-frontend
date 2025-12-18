@@ -39,33 +39,40 @@
           <button @click="toggleComments(w.id)">
             {{ openedWeiboId === w.id ? 'コメントを閉じる' : 'コメントを見る' }}
           </button>
-
           <div v-if="openedWeiboId === w.id">
             <div v-for="c in commentMap[w.id]" :key="c.id" style="font-size: 14px">
-              💬 {{ c.content }}
-              <button @click="startEditComment(c)">編集</button>
-              <button @click="deleteComment(w.id, c.id)">削除</button>
+              <template v-if="editingCommentId === c.id">
+                <input v-model="editingCommentContent" />
+                <button @click="saveEditComment(w.id, c.id)">保存</button>
+                <button @click="cancelEditComment">キャンセル</button>
+              </template>
+
+              <template v-else>
+                💬 {{ c.content }}
+                <button @click="startEditComment(c)">編集</button>
+                <button @click="deleteComment(w.id, c.id)">削除</button>
+              </template>
             </div>
 
             <input v-model="commentInput[w.id]" placeholder="コメントを書く…" style="width: 80%; margin-top: 5px" />
             <button @click="addComment(w.id)">コメント</button>
           </div>
-        </div>
 
-        <!-- 微博本体 -->
-        <div v-if="editId !== w.id">
-          {{ w.content }}
-          <button @click="startEdit(w)">編集</button> <!-- 微博列表 -->
-          <button @click="deleteWeibo(w.id)">削除</button>
-          <button @click="likeWeibo(w.id)">👍 {{ w.likeCount }}</button>
-          <button @click="toggleFavorite(w.id)">⭐ お気に入り</button>
-          <button @click="goReport(w.id)">🚨 通報</button>
+          <!-- 微博本体 -->
+          <div v-if="editId !== w.id">
+            {{ w.content }}
+            <button @click="startEdit(w)">編集</button> <!-- 微博列表 -->
+            <button @click="deleteWeibo(w.id)">削除</button>
+            <button @click="likeWeibo(w.id)">👍 {{ w.likeCount }}</button>
+            <button @click="toggleFavorite(w.id)">⭐ お気に入り</button>
+            <button @click="goReport(w.id)">🚨 通報</button>
 
-        </div>
-        <div v-else>
-          <input v-model="editContent" />
-          <button @click="updateWeibo(w.id)">保存</button>
-          <button @click="cancelEdit">キャンセル</button>
+          </div>
+          <div v-else>
+            <input v-model="editContent" />
+            <button @click="updateWeibo(w.id)">保存</button>
+            <button @click="cancelEdit">キャンセル</button>
+          </div>
         </div>
       </li>
     </ul>
@@ -91,11 +98,33 @@ const editId = ref(null)
 const editContent = ref('')
 const userId = ref(null)
 
+
 /** 全部微博 */
 async function loadAll() {
-  const res = await axios.post('https://miniweibo-backend.onrender.com/weibo/list')
-  weiboList.value = res.data
-  //res.data.forEach(w => loadComments(w.id))
+  try {
+    const res = await axios.post(
+      'https://miniweibo-backend.onrender.com/weibo/list'
+    )
+    weiboList.value = res.data
+  } catch (e) {
+    alert(e.response.data)
+  }
+}
+
+/** 搜索微博 */
+async function searchWeibo() {
+  try {
+    const res = await axios.post(
+      'https://miniweibo-backend.onrender.com/weibo/search',
+      null,
+      {
+        params: { keyword: searchKeyword.value }
+      }
+    )
+    weiboList.value = res.data
+  } catch (e) {
+    alert(e.response.data)
+  }
 }
 
 /** 我的微博 */
@@ -111,12 +140,16 @@ function goViewHistory() {
 
 /** 发微博 */
 async function postWeibo() {
-  if (!newContent.value.trim()) return
-  await axios.post('https://miniweibo-backend.onrender.com/post', {
-    content: newContent.value
-  })
-  newContent.value = ''
-  loadAll()
+  try {
+    await axios.post(
+      'https://miniweibo-backend.onrender.com/post',
+      { content: newContent.value }
+    )
+    newContent.value = ''
+    loadAll()
+  } catch (e) {
+    alert(e.response.data)
+  }
 }
 async function toggleFavorite(weiboId) {
   await axios.post(
@@ -129,29 +162,16 @@ async function toggleFavorite(weiboId) {
   loadAll()
 }
 
-
-/** 删除 */
+/** 删除 微博*/
 async function deleteWeibo(id) {
-  await axios.delete(`https://miniweibo-backend.onrender.com/${id}`)
-  loadAll()
-}
-async function searchWeibo() {
-  if (!searchKeyword.value.trim()) {
+  try {
+    await axios.delete(
+      `https://miniweibo-backend.onrender.com/${id}`
+    )
     loadAll()
-    return
+  } catch (e) {
+    alert(e.response.data)
   }
-
-  const res = await axios.post(
-    'https://miniweibo-backend.onrender.com/weibo/search',
-    null,
-    {
-      params: {
-        keyword: searchKeyword.value
-      }
-    }
-  )
-
-  weiboList.value = res.data
 }
 
 /** 编辑 */
@@ -163,14 +183,22 @@ function cancelEdit() {
   editId.value = null
 }
 
-/** 更新 */
+/** 更新 微博 */
 async function updateWeibo(id) {
-  await axios.put(`https://miniweibo-backend.onrender.com/weibo/${id}`, {
-    content: editContent.value
-  })
-  editId.value = null
-  loadAll()
+  try {
+    await axios.put(
+      `https://miniweibo-backend.onrender.com/weibo/${id}`,
+      {
+        content: editContent.value
+      }
+    )
+    editId.value = null
+    loadAll()
+  } catch (e) {
+    alert(e.response.data)
+  }
 }
+
 
 /** 退出 */
 async function logout() {
@@ -194,33 +222,36 @@ async function likeWeibo(id) {
   loadAll()
 }
 async function addComment(weiboId) {
-  const content = commentInput.value[weiboId]
-  if (!content || !content.trim()) return
-
-  await axios.post(
-    'https://miniweibo-backend.onrender.com/addComment',
-    {
-      weiboId: weiboId,
-      content: content
-    }
-  )
-
-  commentInput.value[weiboId] = ''
-  loadComments(weiboId)
-}
-async function deleteComment(weiboId, commentId) {
-  await axios.post(
-    'https://miniweibo-backend.onrender.com/deleteComment',
-    null,
-    {
-      params: {
-        commentId: commentId
+  try {
+    await axios.post(
+      'https://miniweibo-backend.onrender.com/addComment',
+      {
+        weiboId: weiboId,
+        content: commentInput.value[weiboId]
       }
-    }
-  )
-
-  loadComments(weiboId)
+    )
+    commentInput.value[weiboId] = ''
+    loadComments(weiboId)
+  } catch (e) {
+    alert(e.response.data)
+  }
 }
+
+async function deleteComment(weiboId, commentId) {
+  try {
+    await axios.post(
+      'https://miniweibo-backend.onrender.com/deleteComment',
+      null,
+      {
+        params: { commentId }
+      }
+    )
+    loadComments(weiboId)
+  } catch (e) {
+    alert(e.response.data)
+  }
+}
+
 const editingCommentId = ref(null)
 const editingCommentContent = ref('')
 
@@ -235,21 +266,21 @@ function cancelEditComment() {
 }
 
 async function saveEditComment(weiboId, commentId) {
-  await axios.post(
-    'https://miniweibo-backend.onrender.com/updateComment',
-    {
-      content: editingCommentContent.value
-    },
-    {
-      params: {
-        commentId: commentId
+  try {
+    await axios.put(
+      `https://miniweibo-backend.onrender.com/comment/${commentId}`,
+      {
+        content: editingCommentContent.value
       }
-    }
-  )
-
-  cancelEditComment()
-  loadComments(weiboId)
+    )
+    cancelEditComment()
+    loadComments(weiboId)
+  } catch (e) {
+    alert(e.response.data)
+  }
 }
+
+
 function toggleComments(weiboId) {
   if (openedWeiboId.value === weiboId) {
     openedWeiboId.value = null
@@ -265,16 +296,19 @@ function toggleComments(weiboId) {
 
 
 async function loadComments(weiboId) {
-  const res = await axios.get(
-    'https://miniweibo-backend.onrender.com/getCommentsByWeibo',
-    {
-      params: {
-        weiboId: weiboId
+  try {
+    const res = await axios.get(
+      'https://miniweibo-backend.onrender.com/getCommentsByWeibo',
+      {
+        params: { weiboId }
       }
-    }
-  )
-  commentMap.value[weiboId] = res.data
+    )
+    commentMap.value[weiboId] = res.data
+  } catch (e) {
+    alert(e.response.data)
+  }
 }
+
 function goNotifications() {
   router.push('/notifications')
 }
