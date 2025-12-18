@@ -22,7 +22,7 @@
       <button @click="logout" style="margin-left: 10px">ログアウト</button>
       <button @click="goMessages" style="margin-left: 10px">ダイレクトメッセージ</button>
       <button @click="loadAll" style="margin-left: 10px">全てのブログ</button>
-      <button @click="loadMine" style="margin-left: 10px">全てのブログ</button>
+      <button @click="loadMine" style="margin-left: 10px">私の全てのブログ</button>
       <button @click="goUsers" style="margin-left: 10px">ユーザー一覧</button>
       <button @click="goNotifications" style="margin-left: 10px">通知</button>
       <button @click="goFavorites" style="margin-left: 10px">お気に入り</button>
