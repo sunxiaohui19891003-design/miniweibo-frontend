@@ -103,7 +103,7 @@ const userId = ref(null)
 async function loadAll() {
   try {
     const res = await axios.post(
-      'https://miniweibo-backend.onrender.com/weibo/list'
+      '/api/weibo/list'
     )
     weiboList.value = res.data
   } catch (e) {
@@ -115,7 +115,7 @@ async function loadAll() {
 async function searchWeibo() {
   try {
     const res = await axios.post(
-      'https://miniweibo-backend.onrender.com/weibo/search',
+      '/api/weibo/search',
       null,
       {
         params: { keyword: searchKeyword.value }
@@ -130,7 +130,7 @@ async function searchWeibo() {
 /** 我的微博 */
 async function loadMine() {
   const res = await axios.get(
-    'https://miniweibo-backend.onrender.com/weibo/my'
+    '/api/weibo/my'
   )
   weiboList.value = res.data
 }
@@ -142,7 +142,7 @@ function goViewHistory() {
 async function postWeibo() {
   try {
     await axios.post(
-      'https://miniweibo-backend.onrender.com/post',
+      '/api/post',
       { content: newContent.value }
     )
     newContent.value = ''
@@ -153,7 +153,7 @@ async function postWeibo() {
 }
 async function toggleFavorite(weiboId) {
   await axios.post(
-    'https://miniweibo-backend.onrender.com/favorites',
+    '/api/favorites',
     null,
     {
       params: { weiboId }
@@ -166,7 +166,7 @@ async function toggleFavorite(weiboId) {
 async function deleteWeibo(id) {
   try {
     await axios.delete(
-      `https://miniweibo-backend.onrender.com/${id}`
+      `/api/weibo/${id}`
     )
     loadAll()
   } catch (e) {
@@ -187,7 +187,7 @@ function cancelEdit() {
 async function updateWeibo(id) {
   try {
     await axios.put(
-      `https://miniweibo-backend.onrender.com/weibo/${id}`,
+      `/api/weibo/${id}`,
       {
         content: editContent.value
       }
@@ -202,7 +202,7 @@ async function updateWeibo(id) {
 
 /** 退出 */
 async function logout() {
-  await axios.post('https://miniweibo-backend.onrender.com/logout')
+  await axios.post('/api/logout')
   router.push('/login')
 }
 
@@ -218,13 +218,13 @@ onMounted(() => {
 })
 
 async function likeWeibo(id) {
-  await axios.post(`https://miniweibo-backend.onrender.com/weibo/${id}/like`)
+  await axios.post(`/api/weibo/${id}/like`)
   loadAll()
 }
 async function addComment(weiboId) {
   try {
     await axios.post(
-      'https://miniweibo-backend.onrender.com/addComment',
+      '/api/addComment',
       {
         weiboId: weiboId,
         content: commentInput.value[weiboId]
@@ -240,7 +240,7 @@ async function addComment(weiboId) {
 async function deleteComment(weiboId, commentId) {
   try {
     await axios.post(
-      'https://miniweibo-backend.onrender.com/deleteComment',
+      '/api/deleteComment',
       null,
       {
         params: { commentId }
@@ -268,7 +268,7 @@ function cancelEditComment() {
 async function saveEditComment(weiboId, commentId) {
   try {
     await axios.put(
-      `https://miniweibo-backend.onrender.com/comment/${commentId}`,
+      `/api/comment/${commentId}`,
       {
         content: editingCommentContent.value
       }
@@ -298,7 +298,7 @@ function toggleComments(weiboId) {
 async function loadComments(weiboId) {
   try {
     const res = await axios.get(
-      'https://miniweibo-backend.onrender.com/getCommentsByWeibo',
+      '/api/getCommentsByWeibo',
       {
         params: { weiboId }
       }
@@ -333,7 +333,7 @@ function goUsers() {
 }
 async function followUser(targetUserId) {
   await axios.post(
-    'https://miniweibo-backend.onrender.com/follow',
+    '/api/follow',
     null,
     {
       params: {
