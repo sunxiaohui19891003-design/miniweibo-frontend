@@ -36,7 +36,7 @@ const notifications = ref([])
 onMounted(async () => {
   try {
     const res = await axios.get(
-      'https://miniweibo-backend.onrender.com/notifications'
+      '/api/notifications'
     )
     notifications.value = res.data
   } catch (e) {

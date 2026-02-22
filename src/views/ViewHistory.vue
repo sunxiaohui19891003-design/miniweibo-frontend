@@ -37,7 +37,7 @@ const weiboList = ref([])
 async function loadViewHistory() {
   try {
     const res = await axios.get(
-      'https://miniweibo-backend.onrender.com/view-history'
+      '/api/view-history'
     )
     weiboList.value = res.data
   } catch (e) {

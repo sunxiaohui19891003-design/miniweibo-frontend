@@ -61,7 +61,7 @@ const newContent = ref('')
 const editId = ref(null)
 const editContent = ref('')
 
-const backend = 'https://miniweibo-backend.onrender.com'
+const backend = '/api'
 
 /** 查私信 */
 async function loadMessages() {

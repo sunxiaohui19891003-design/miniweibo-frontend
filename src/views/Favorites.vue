@@ -31,14 +31,14 @@ const weiboList = ref([])
 
 async function loadFavorites() {
     const res = await axios.get(
-        'https://miniweibo-backend.onrender.com/favorites'
+        '/api/favorites'
     )
     weiboList.value = res.data
 }
 
 async function toggleFavorite(weiboId) {
     await axios.post(
-        'https://miniweibo-backend.onrender.com/favorites',
+        '/api/favorites',
         null,
         {
             params: { weiboId }

@@ -39,13 +39,13 @@ const followingList = ref([])
 async function refreshAll() {
   // ① 我关注的人
   const followingRes = await axios.get(
-    'https://miniweibo-backend.onrender.com/followings',
+    '/api/followings',
     { withCredentials: true }
   )
 
   // ② 所有用户
   const usersRes = await axios.get(
-    'https://miniweibo-backend.onrender.com/users',
+    '/api/users',
     { withCredentials: true }
   )
 
@@ -61,13 +61,13 @@ const otherUsers = ref([])
 async function loadData() {
   // 1️⃣ 我关注的人
   const followingRes = await axios.get(
-    'https://miniweibo-backend.onrender.com/followings',
+    '/api/followings',
     { withCredentials: true }
   )
 
   // 2️⃣ 所有用户
   const usersRes = await axios.get(
-    'https://miniweibo-backend.onrender.com/users',
+    '/api/users',
     { withCredentials: true }
   )
 
@@ -81,7 +81,7 @@ async function loadData() {
 /** 关注 / 取关 */
 async function followUser(targetUserId) {
   await axios.post(
-    'https://miniweibo-backend.onrender.com/follow',
+    '/api/follow',
     null,
     {
       params: { following_id: targetUserId },

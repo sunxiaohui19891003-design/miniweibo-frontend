@@ -57,7 +57,7 @@ async function submitReport() {
 
   try {
     await axios.post(
-      'https://miniweibo-backend.onrender.com/report',
+      '/api/report',
       null,
       {
         params: {
