@@ -141,6 +141,7 @@ function goViewHistory() {
 /** 发微博 */
 async function postWeibo() {
   try {
+    console.log("发送内容:", newContent.value)
     await axios.post(
       '/api/post',
       { content: newContent.value }
