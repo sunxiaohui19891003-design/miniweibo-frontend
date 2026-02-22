@@ -218,6 +218,7 @@ onMounted(() => {
 })
 
 async function likeWeibo(id) {
+  console.log("🔥 like clicked", id)
   await axios.post(`/api/weibo/${id}/like`)
   loadAll()
 }
