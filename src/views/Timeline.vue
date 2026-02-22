@@ -14,7 +14,11 @@
 
     <!-- 操作区 -->
     <div style="margin-bottom: 20px">
-      <textarea v-model="newContent" placeholder="何か書いてみよう…" style="width: 100%; height: 80px" />
+      <textarea
+  v-model="newContent"
+  placeholder="何か書いてみよう…"
+  style="width: 100%; height: 80px">
+</textarea>
       <br />
       <button @click="postWeibo">投稿する</button>
       <input v-model="searchKeyword" placeholder="検索ブログ内容..." style="width: 60%; margin-left: 10px" />
