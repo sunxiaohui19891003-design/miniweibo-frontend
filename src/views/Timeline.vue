@@ -20,7 +20,7 @@
   style="width: 100%; height: 80px">
 </textarea>
       <br />
-      <button @click="postWeibo">投稿する</button>
+      <button type="button" @click="postWeibo">投稿する</button>
       <input v-model="searchKeyword" placeholder="検索ブログ内容..." style="width: 60%; margin-left: 10px" />
       <button @click="searchWeibo">検索</button>
       <button @click="logout" style="margin-left: 10px">ログアウト</button>
@@ -144,9 +144,11 @@ function goViewHistory() {
 
 /** 发微博 */
 async function postWeibo() {
-  try {
-    console.log("🔥 v-model内容:", newContent.value)
+  alert("按钮被点了")
+      console.log("🔥 v-model内容:", newContent.value)
 console.log("🔥 DOM真实值:", document.querySelector("textarea").value)
+  try {
+
     await axios.post(
       '/api/post',
       { content: newContent.value }
