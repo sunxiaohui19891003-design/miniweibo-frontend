@@ -36,7 +36,7 @@ const router = useRouter()
 async function login() {
   try {
     const res = await axios.post(
-      '/login',
+      '/api/login',
       {
         username: username.value,
         password: password.value
@@ -67,7 +67,7 @@ async function login() {
 async function register() {
   try {
     const res = await axios.post(
-      '/register',
+      '/api/register',
       {
         username: username.value,
         password: password.value
