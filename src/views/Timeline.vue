@@ -153,7 +153,7 @@ console.log("🔥 DOM真实值:", document.querySelector("textarea").value)
       '/api/post',
       { content: newContent.value }
     )
-    newContent.value = ''
+    //newContent.value = ''
     loadAll()
   } catch (e) {
     alert(e.response.data)
