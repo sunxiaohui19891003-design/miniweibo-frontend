@@ -144,16 +144,14 @@ function goViewHistory() {
 
 /** 发微博 */
 async function postWeibo() {
-  alert("按钮被点了")
-      console.log("🔥 v-model内容:", newContent.value)
-console.log("🔥 DOM真实值:", document.querySelector("textarea").value)
+
   try {
 
     await axios.post(
       '/api/post',
       { content: newContent.value }
     )
-    //newContent.value = ''
+    newContent.value = ''
     loadAll()
   } catch (e) {
     alert(e.response.data)
