@@ -145,7 +145,8 @@ function goViewHistory() {
 /** 发微博 */
 async function postWeibo() {
   try {
-    console.log("发送内容:", newContent.value)
+    console.log("🔥 v-model内容:", newContent.value)
+console.log("🔥 DOM真实值:", document.querySelector("textarea").value)
     await axios.post(
       '/api/post',
       { content: newContent.value }
