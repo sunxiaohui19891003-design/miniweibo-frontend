@@ -13,7 +13,14 @@
     </div>
 
     <!-- 操作区 -->
-    <div style="margin-bottom: 20px">
+    <div
+  style="
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  "
+>
       <textarea
   v-model="newContent"
   placeholder="何か書いてみよう…"
