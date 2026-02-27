@@ -42,6 +42,7 @@
       <button @click="goViewHistory" >閲覧履歴</button>
 
     </div>
+    </div>
 
     <hr />
     <ul>
