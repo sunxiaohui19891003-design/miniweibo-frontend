@@ -30,14 +30,14 @@
       <button type="button" @click="postWeibo">投稿する</button>
       <input v-model="searchKeyword" placeholder="検索ブログ内容..." style="width: 60%; margin-left: 10px" />
       <button @click="searchWeibo">検索</button>
-      <button @click="logout" style="margin-left: 10px">ログアウト</button>
-      <button @click="goMessages" style="margin-left: 10px">ダイレクトメッセージ</button>
-      <button @click="loadAll" style="margin-left: 10px">全てのブログ</button>
-      <button @click="loadMine" style="margin-left: 10px">私の全てのブログ</button>
-      <button @click="goUsers" style="margin-left: 10px">ユーザー一覧</button>
-      <button @click="goNotifications" style="margin-left: 10px">通知</button>
-      <button @click="goFavorites" style="margin-left: 10px">お気に入り</button>
-      <button @click="goViewHistory" style="margin-left: 10px">閲覧履歴</button>
+      <button @click="logout" >ログアウト</button>
+      <button @click="goMessages" >ダイレクトメッセージ</button>
+      <button @click="loadAll" >全てのブログ</button>
+      <button @click="loadMine" >私の全てのブログ</button>
+      <button @click="goUsers" >ユーザー一覧</button>
+      <button @click="goNotifications" >通知</button>
+      <button @click="goFavorites" >お気に入り</button>
+      <button @click="goViewHistory" >閲覧履歴</button>
 
     </div>
 
