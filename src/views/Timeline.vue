@@ -13,20 +13,22 @@
     </div>
 
     <!-- 操作区 -->
-    <div
-  style="
-    margin-bottom: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  "
->
+    <div style="margin-bottom: 20px;">
       <textarea
   v-model="newContent"
   placeholder="何か書いてみよう…"
   style="width: 100%; height: 80px">
 </textarea>
-      <br />
+  <!-- 第二块：功能按钮 -->
+  <div
+    style="
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    "
+  >
+      
       <button type="button" @click="postWeibo">投稿する</button>
       <input v-model="searchKeyword" placeholder="検索ブログ内容..." style="width: 60%; margin-left: 10px" />
       <button @click="searchWeibo">検索</button>
